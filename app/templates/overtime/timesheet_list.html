@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+
+{% block head_title %}
+Overtime
+{% endblock head_title %}
+
+
+{% block content %}
+<div class="container py-3">
+    <h1>Overtime</h1>
+    <hr>
+    <div class="container py-3">
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link text-dark"
+                    href="{% url 'overtime:overtime-create' %}"><i class="bi bi-calendar-plus fs-3 text-success"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark"
+                    href="#"><i class="bi bi-calendar-date fs-3 text-warning"></i></a>
+            </li>
+        </ul>
+        <hr>
+    </div>
+    <div class="container px-5">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <tbody>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Reason</th>
+                            <th>Hours</th>
+                            <th colspan="2">Multiplier</th>
+                        </tr>
+                    </thead>
+                    {% for object in object_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{object.date}}</td>
+                        <td>{{object.reason}}</td>
+                        <td>{{object.time_diff}}</td>
+                        <td>{{object.multiplier}}</td>
+                        <td class="">
+                            <a class="text-primary text-decoration-none">
+                                <i class="bi bi-info-square border-0"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal_{{object.pk}}"></i>
+                            </a>
+                            <a class="mx-2" href="#"><i class="bi bi-pencil text-warning"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% for object in object_list %}
+
+
+<!-- Modal -->
+<div class="modal fade"
+    id="exampleModal_{{object.pk}}"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"
+                    id="exampleModalLabel">{{object.employee}}</h5>
+                <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tbody>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Reason</th>
+                                    <th>Hours</th>
+                                    <th>Multiplier</th>
+                                    <th>Rate</th>
+                                    <th>Overtime</th>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>{{object.date}}</td>
+                                <td>{{object.reason}}</td>
+                                <td>{{object.time_diff}}</td>
+                                <td>{{object.multiplier}}</td>
+                                <td>${{object.employee.get_hourly_rate}}</td>
+                                <td>${{object.get_overtime}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock content %}
